@@ -1,0 +1,23 @@
+{% extends "base_firstApp.html" %}
+
+{% block head %}
+    {{ block.super }} | Detail
+{% endblock head %}
+
+{% block content %}
+
+        <br>
+            <div>
+                <h1>
+                    {{post.title}}
+                </h1>
+                <h7 class="rtl">
+                    {{post.update_date_time}}
+                </h7>
+                <p>
+                    {{post.content|safe}}
+                </p>
+            </div>
+        <hr>
+
+{% endblock content %}

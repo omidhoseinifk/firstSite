@@ -1,0 +1,14 @@
+@font-face {
+	font-family: rmTypeRighter;
+	src: url(../fonts/rmTypeRighter/rmTypeRighter.otf);
+}
+
+body {
+	font-family: rmTypeRighter;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.rtl{
+	direction: rtl;
+}

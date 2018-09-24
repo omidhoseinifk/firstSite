@@ -1,0 +1,75 @@
+{% extends "base_firstApp.html" %}
+
+{% block head %}
+    {{ block.super }} | List
+{% endblock head %}
+
+{% block content %}
+
+    {% for post in posts %}
+        <br>
+        <div class="row">
+
+            <div class="col-6">
+                        
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <h4 class="card-title">
+
+                            <a href="{{ post.get_absolute_url }}">
+                                {{post.title}}
+                            </a>
+
+                        </h4>
+
+                        <p class="card-text">
+                            {{post.content|safe|truncatechars_html:200}}
+                            <small>
+                            {{post.update_date_time}}
+                            </small>
+                        </p>
+
+                        <a href="{% url 'firstApp:edit' id=post.id %}" button type="button" class="btn btn-outline-warning btn-sm" class="card-link">Edit Post</a>
+
+                        <a href="{% url 'firstApp:delete' id=post.id %}" button type="button" class="btn btn-outline-danger btn-sm" class="card-link">Delete Post</a>
+
+                    </div>
+
+                </div>
+                    
+            </div>
+
+        </div>
+
+    {% endfor %}
+    <br>
+    <div class="row">
+        
+        <div class="text-center">
+        
+            <div class="pagination">
+                <span class="step-links">
+                    {% if posts.has_previous %}
+                        <a class="btn btn-default btn-sm" href="?page=1">&laquo; first</a>
+                        <a class="btn btn-default btn-sm" href="?page={{ posts.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                    </span>
+
+                    {% if posts.has_next %}
+                        <a class="btn btn-default btn-sm" href="?page={{ posts.next_page_number }}">next</a>
+                        <a class="btn btn-default btn-sm" href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+    
+    <br>
+{% endblock content %}  

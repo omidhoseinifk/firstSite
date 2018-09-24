@@ -1,0 +1,162 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+    <title>
+
+        {% block head %}
+        Welcome to First Site
+        {% endblock head %}
+
+    </title>
+
+    <head>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% block css %}
+
+            <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'css/custom_style.css' %}">
+
+        {% endblock css %}
+        
+    </head>
+
+    <body>
+
+        {% block navbar %}
+
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                {# <!-- Brand --> #}
+                {# <a class="navbar-link" href="#">Logo</a> #}
+
+                <!-- Links -->
+                <ul class="navbar-nav">
+                  
+                    <!-- Home -->
+                    <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                    </li>
+
+                    {% if request.user.is_superuser or request.user.is_staff or request.user.is_authenticated %}
+
+                    <!-- Dashboard -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="/admin">Dashboard</a>
+                    </li>
+
+                    <!-- Create Post -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'firstApp:create' %}">Create Post</a>
+                    </li>
+
+                    <!-- Logout -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="/admin/logout">Logout</a>
+                    </li>
+
+                    {% else %}
+
+                    <!-- Login -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="/admin">Login</a>
+                    </li>
+
+                    {% endif %}
+                    
+                    <!-- Search Form-->
+                    <li>
+                        
+                        <form action="" method="GET" class="form-inline pull-lg-left pull-md-left hidden-md-down" >
+                            <input name="q" class="form-control mr-sm-2" type="text" placeholder="Search">
+                            <button class="btn btn-success" type="submit">Search</button>
+                        </form>
+
+                    </li>
+
+                </ul>
+            </nav>
+
+        {% endblock navbar %}
+
+        <div class="container" class="rtl">
+
+            {% block messages %}
+
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+
+                {% endif %}
+          
+            {% endblock messages %}
+
+            {% block search_result %}
+                
+                {% for result in search_result %}
+
+                    <div class="row">
+
+                        <div class="col-12">
+                                    
+                            <div class="card">
+
+                                <div class="card-body">
+
+                                    <h4 class="card-title">
+
+                                        <a href="{{ result.get_absolute_url }}">
+                                            {{result.title}}
+                                        </a>
+
+                                    </h4>
+
+                                    <p class="card-text">
+                                        {{result.content|safe|truncatechars_html:200}}
+                                        <small>
+                                        {{result.update_date_time}}
+                                        </small>
+                                    </p>
+
+                                    <a href="{% url 'firstApp:edit' id=result.id %}" button type="button" class="btn btn-outline-warning btn-sm" class="card-link">Edit Post</a>
+
+                                    <a href="{% url 'firstApp:delete' id=result.id %}" button type="button" class="btn btn-outline-danger btn-sm" class="card-link">Delete Post</a>
+
+                                </div>
+
+                            </div>
+                                
+                        </div>
+
+                    </div>
+                    
+                {% endfor %}
+
+            {% endblock search_result %}
+            <hr>
+
+            {% block content %}
+
+            {% endblock content %}
+
+        </div>
+
+        {% block js %}
+
+        <script type="text/javascript", src="{% static 'js/jquery.min.js' %}"></script>
+        <script type="text/javascript", src="{% static 'js/popper.min.js' %}"></script>
+        <script type="text/javascript", src="{% static 'js/bootstrap.min.js' %}"></script>
+
+        {% endblock js %}
+
+    </body>
+
+</html>
